@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+	<title></title>
+</head>
+<style type="text/css">
+	.s{
+		color: darkgreen; 
+	}
+
+	.h{
+		display: none;
+	}
+</style>
+<body style="">
+	<div style="display: flex; justify-content: center;margin-top: 35vh">
+		<div>
+			<div>Selecione a data inicial:</div>
+			<input id="pickdateini" type="date" value="" max="2019-12-25" step="1" style="margin-top: 1rem;margin-right: 4rem; width: 10rem; height: auto;">
+		</div>
+		<div>
+			<div>Selecione a data final:</div>
+			<input id="pickdatefin" type="date" value="" max="2019-12-25" step="1" style="margin-top: 1rem; width: 10rem; height: auto;">
+		</div>
+		
+	</div>
+
+	<div  style="display: flex; flex-direction: column; justify-content: center; align-items: center; margin-top: 1.5rem">
+
+		<div>Digite a sigla do estado desejado (RJ, MG, GO, SC, DF ou SP, NH = "", TD = Metodo da atualizacao):</div>
+		<input value="" style="margin-top: 1rem; width: 4rem; height: auto;" type="text" id="estado">
+
+
+		
+	</div>
+	<div  style="display: flex; flex-direction: column; justify-content: center; align-items: center; margin-top: 1.5rem">
+
+		<div>Excluir MEI: (Ativado ou Desativado)</div>
+		<input value="" style="margin-top: 1rem; width: 4rem; height: auto;" type="text" id="mei">
+
+
+		
+	</div>
+
+	<div style="display: flex; justify-content: center; margin-top: 10vh">
+		<button style="width: 6rem; height: 1.5rem" type="button" onclick="send()">Enviar</button>
+		
+	</div>
+	<div style="text-align: center; margin-top: 1rem" class="h">Solicitação enviada, aguarde o recebimento via email</div>
+</body>
+<script type="text/javascript">
+	function send(){
+		var pickinivalue = document.getElementById("pickdateini").value;
+		var pickfinvalue = document.getElementById("pickdatefin").value;
+		var estadovalue = document.getElementById("estado").value;
+		var meivalue = document.getElementById("mei").value;
+		try {
+
+		var msg = document.querySelector(".h")
+		msg.classList = "s"
+	}
+		catch{
+			
+		}
+		fetch('/api', {
+		method: 'POST',
+		body: JSON.stringify({'dataini': pickinivalue, 'datafin': pickfinvalue, 'es': estadovalue, 'mei': meivalue}
+		), 	headers: {
+			'Content-type': 'application/json; charset=UTF-8'
+		}
+		})}
+
+</script>
+<script type="text/javascript">
+
+var pickini = document.getElementById("pickdateini")
+var pickfin = document.getElementById("pickdatefin")
+
+
+
+
+var ttoday = new Date()
+var yesterday = new Date();
+
+
+
+yesterday.setDate(ttoday.getDate() - 1);
+
+
+var month = yesterday.getMonth() + 1; //months from 1-12
+var day = yesterday.getDate();
+var year = yesterday.getFullYear();
+
+if (day < 10){
+	datacomp = year+"-"+month+"-0"+day
+}
+
+else{
+	datacomp = year+"-"+month+"-"+day
+}
+
+
+pickini.setAttribute("max", datacomp);
+pickfin.setAttribute("max", datacomp);
+
+
+
+</script>
+</html>
